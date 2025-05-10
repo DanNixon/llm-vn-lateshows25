@@ -1,0 +1,40 @@
+---
+name: ICD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/icd.yml'
+      - 'devenv.*'
+      - 'icd/**'
+  pull_request:
+    paths:
+      - '.github/workflows/icd.yml'
+      - 'devenv.*'
+      - 'icd/**'
+
+jobs:
+  library:
+    name: Library
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - uses: cachix/cachix-action@v16
+        with:
+          name: devenv
+      - name: Install devenv.sh
+        run: nix profile install nixpkgs#devenv
+
+      - name: Clippy
+        shell: devenv shell bash -- -e {0}
+        run: |
+          set -x
+          cd ./icd
+          cargo clippy -- -Dwarnings
+
+      # Will be built as part of other jobs (diagnostic CLI, periperhal
+      # controller firmware, etc.) so no need to do that here.

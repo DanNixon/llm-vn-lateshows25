@@ -1,0 +1,16 @@
+[Unit]
+Description=LLM VN host
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+ExecStart=/usr/bin/llm-vn-host
+Restart=always
+RestartSec=5s
+Environment="RUST_LOG=debug"
+Environment="PRINTER_SERIAL_PORT=/dev/ttyUSB0"
+Environment="CHARACTER_FILE=/etc/llm-vn-characters.toml"
+Environment="CONVERSATION_DIRECTORY=/var/log/llm-vn/"
+
+[Install]
+WantedBy=multi-user.target

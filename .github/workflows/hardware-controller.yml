@@ -1,0 +1,61 @@
+---
+name: Hardware Controller
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/hardware-controller.yml'
+      - 'devenv.*'
+      - 'icd/**'
+      - 'hardware-controller/**'
+  pull_request:
+    paths:
+      - '.github/workflows/hardware-controller.yml'
+      - 'devenv.*'
+      - 'icd/**'
+      - 'hardware-controller/**'
+
+jobs:
+  quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - uses: cachix/cachix-action@v16
+        with:
+          name: devenv
+      - name: Install devenv.sh
+        run: nix profile install nixpkgs#devenv
+
+      - name: Clippy
+        shell: devenv shell bash -- -e {0}
+        run: |
+          set -x
+          cd ./hardware-controller
+          cargo clippy -- -Dwarnings
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs:
+      - quality
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - uses: cachix/cachix-action@v16
+        with:
+          name: devenv
+      - name: Install devenv.sh
+        run: nix profile install nixpkgs#devenv
+
+      - name: Build
+        shell: devenv shell bash -- -e {0}
+        run: |
+          set -x
+          cd ./hardware-controller
+          cargo build --release

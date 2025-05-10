@@ -1,0 +1,27 @@
+[package]
+name = "llm-vn-host"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+
+[dependencies]
+anyhow = "1.0.98"
+clap = { version = "4.5.37", features = ["derive", "env"] }
+embedded-graphics = "0.8.1"
+env_logger = "0.11.8"
+escpos = { version = "0.15.2", default-features = false, features = ["serial_port", "ui"] }
+icd = { path = "../icd/", features = ["use-std"] }
+jiff = { version = "0.2.13", features = ["serde"] }
+log = "0.4.27"
+ollama-rs = { version = "0.3.0", default-features = false, features = ["rustls"] }
+postcard-rpc = { version = "0.11.9", features = ["raw-nusb", "use-std"] }
+rand = "0.9.1"
+schemars = "0.8.22"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
+text-splitter = "0.25.1"
+tokio = { version = "1.44.2", features = ["io-std", "macros", "rt-multi-thread", "time"] }
+toml = "0.8.22"
+
+[lints.rust]
+unused_crate_dependencies = "deny"
