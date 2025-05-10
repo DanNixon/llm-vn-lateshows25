@@ -53,13 +53,6 @@ jobs:
       - name: Install devenv.sh
         run: nix profile install nixpkgs#devenv
 
-      - name: Build
-        shell: devenv shell bash -- -e {0}
-        run: |
-          set -x
-          cd ./host-software
-          cargo build --release
-
       - name: Build (aarch64)
         shell: devenv shell bash -- -e {0}
         run: |
