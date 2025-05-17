@@ -159,7 +159,7 @@ async fn converse<D: Driver>(
             .show_choice_screen(character.choice_screen(&vn_out))
             .await;
 
-        const BUTTON_TIMEOUT: Duration = Duration::from_secs(30);
+        const BUTTON_TIMEOUT: Duration = Duration::from_secs(60);
         let button = tokio::time::timeout(BUTTON_TIMEOUT, controller.wait_for_button_push())
             .await
             .unwrap_or_else(|_| {
