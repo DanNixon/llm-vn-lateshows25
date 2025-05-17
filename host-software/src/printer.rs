@@ -166,7 +166,7 @@ impl<D: Driver> Printer<D> {
         character: &Character,
         msg: &str,
     ) -> Result<()> {
-        self.print_transcript_message(JustifyMode::RIGHT, &character.name, msg, 6)
+        self.print_transcript_message(JustifyMode::RIGHT, &character.name, msg, 7)
     }
 
     pub(crate) fn print_chat_footer(&mut self) -> Result<()> {
